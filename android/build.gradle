@@ -2,14 +2,14 @@ group 'com.simform.flutter_credit_card'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.7.10'
+    ext.kotlin_version = '1.9.10'
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.1'
+        classpath 'com.android.tools.build:gradle:8.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -31,7 +31,7 @@ android {
         namespace 'com.simform.flutter_credit_card'
     }
 
-    compileSdk 31
+    compileSdk 34
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -48,6 +48,25 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 21
+        
+        // Enable 16KB page size support
+        ndk {
+            // Only include architectures that support 16KB pages
+            abiFilters 'arm64-v8a', 'x86_64'
+        }
+    }
+
+    // Add build features for 16KB page size compatibility
+    buildFeatures {
+        buildConfig true
+    }
+
+    // Packaging options to handle 16KB page alignment
+    packagingOptions {
+        // Ensure native libraries are properly aligned for 16KB pages
+        jniLibs {
+            useLegacyPackaging = false
+        }
     }
 }
